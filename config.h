@@ -12,15 +12,14 @@ static const int showsystray        = 1;     /* 0 means no systray */
 static const int showbar            = 1;     /* 0 means no bar */
 static const int topbar             = 1;     /* 0 means bottom bar */
 static const char *fonts[]          = { "JetBrainsMono Nerd Font:size=13" };
-static const char col_gray1[]       = "#222222";
-static const char col_gray2[]       = "#444444";
-static const char col_gray3[]       = "#bbbbbb";
-static const char col_gray4[]       = "#eeeeee";
-static const char col_cyan[]        = "#005577";
+static const char col_bg[]          = "#282828";
+static const char col_fg[]          = "#d4be98";
+static const char col_red[]         = "#ea6962";
+static const char col_bg_dim[]      = "#1b1b1b";
 static const char *colors[][3]      = {
-	/*               fg         bg         border   */
-	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
-	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
+    /*               fg         bg         border   */
+    [SchemeNorm] = { col_fg, col_bg, col_bg_dim },
+    [SchemeSel]  = { col_red, col_bg,  col_fg },
 };
 
 /* tagging */
