@@ -1431,7 +1431,7 @@ movemouse(const Arg *arg)
 			handler[ev.type](&ev);
 			break;
 		case MotionNotify:
-			if ((ev.xmotion.time - lasttime) <= (1000 / 60))
+			if ((ev.xmotion.time - lasttime) <= (1000 / refresh_rate))
 				continue;
 			lasttime = ev.xmotion.time;
 
@@ -1617,7 +1617,7 @@ resizemouse(const Arg *arg)
 			handler[ev.type](&ev);
 			break;
 		case MotionNotify:
-			if ((ev.xmotion.time - lasttime) <= (1000 / 60))
+			if ((ev.xmotion.time - lasttime) <= (1000 / refresh_rate))
 				continue;
 			lasttime = ev.xmotion.time;
 
@@ -2004,8 +2004,6 @@ showhide(Client *c)
 void
 spawn(const Arg *arg)
 {
-	if (arg->v == dmenucmd)
-		dmenumon[0] = '0' + selmon->num;
 	if (fork() == 0) {
 		if (dpy)
 			close(ConnectionNumber(dpy));
