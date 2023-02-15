@@ -94,7 +94,7 @@ static const Key keys[] = {
 	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
 	{ MODKEY,                       XK_minus,  setgapps,       {.i = -1 } },
 	{ MODKEY,                       XK_equal,  setgapps,       {.i = +1 } },
-	{ MODKEY|ShiftMask,                       xk_equal,  setgapps,       {.i = 0  } },
+	{ MODKEY|ShiftMask,             Xk_equal,  setgapps,       {.i = 0  } },
 	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
 	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
 	TAGKEYS(                        XK_1,                      0)
