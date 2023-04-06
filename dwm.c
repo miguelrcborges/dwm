@@ -305,6 +305,7 @@ static Clr **scheme;
 static Display *dpy;
 static Drw *drw;
 static Monitor *mons, *selmon;
+
 static Window root, wmcheckwin;
 
 /* configuration, allows nested code to access above variables */
@@ -2405,7 +2406,11 @@ updatestatus(void)
 {
 	if (!gettextprop(root, XA_WM_NAME, stext, sizeof(stext)))
 		strcpy(stext, "dwm-"VERSION);
-	drawbar(selmon);
+#ifdef STATIC_STATUS
+	drawbar(dirtomon(status_mon));
+#else
+	drawbars();
+#endif
 	updatesystray();
 }
 

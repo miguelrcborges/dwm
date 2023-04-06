@@ -2,7 +2,7 @@
 
 /* appearance */
 #define STATIC_STATUS                        /* uncomment this if you want a static bar on a monitor */
-static const unsigned int status_mon = 1;   	/* uncomment this if you want a static bar on a monitor */
+static const unsigned int status_mon = 0;   	/* uncomment this if you want a static bar on a monitor */
 static const unsigned int refresh_rate = 144;
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int gappx     = 8;       	/* gaps between windows */
