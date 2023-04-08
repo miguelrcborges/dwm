@@ -930,12 +930,10 @@ drawbar(Monitor *m)
 	if(showsystray && m == systraytomon(m) && !systrayonleft)
 		stw = getsystraywidth();
 
-#ifdef STATIC_STATUS
-	if (m->num == status_mon) { /* status is only drawn on selected monitor */
-#else
-	/* draw status first so it can be overdrawn by tags later */
-	if (m == selmon) { /* status is only drawn on selected monitor */
-#endif
+	if (
+				(m->num == status_mon && status_mon >= 0) ||  // static status
+				(m == selmon && status_mon <= -1)             // following status
+		) {
 		tw = m->ww - drawstatusbar(m, bh, stext);
 	}
 
@@ -2406,11 +2404,12 @@ updatestatus(void)
 {
 	if (!gettextprop(root, XA_WM_NAME, stext, sizeof(stext)))
 		strcpy(stext, "dwm-"VERSION);
-#ifdef STATIC_STATUS
-	drawbar(dirtomon(status_mon));
-#else
-	drawbars();
-#endif
+	
+	if (status_mon >= 0)
+		drawbar(dirtomon(status_mon)); // Draw status at status_mon
+	else
+		drawbar(selmon);               // Draw at set monitor
+
 	updatesystray();
 }
 
@@ -2664,14 +2663,14 @@ Monitor *
 systraytomon(Monitor *m) {
 	Monitor *t;
 	int i, n;
-	if(!systraypinning) {
+	if(status_mon <= -1) { // is not static
 		if(!m)
 			return selmon;
 		return m == selmon ? m : NULL;
 	}
-	for(n = 1, t = mons; t && t->next; n++, t = t->next) ;
-	for(i = 1, t = mons; t && t->next && i < systraypinning; i++, t = t->next) ;
-	if(systraypinningfailfirst && n < systraypinning)
+	for(n = 0, t = mons; t && t->next; n++, t = t->next) ;
+	for(i = 0, t = mons; t && t->next && i < status_mon; i++, t = t->next) ;
+	if(systraypinningfailfirst && n < status_mon)
 		return mons;
 	return t;
 }
