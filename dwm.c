@@ -930,16 +930,6 @@ drawbar(Monitor *m)
 	if(showsystray && m == systraytomon(m) && !systrayonleft)
 		stw = getsystraywidth();
 
-#ifdef STATIC_STATUS
-	if (m->num == status_mon) { /* status is only drawn on selected monitor */
-#else
-	/* draw status first so it can be overdrawn by tags later */
-	if (m == selmon) { /* status is only drawn on selected monitor */
-#endif
-		tw = m->ww - drawstatusbar(m, bh, stext);
-	}
-
-
 	resizebarwin(m);
 	for (c = m->clients; c; c = c->next) {
 		occ |= c->tags;
@@ -972,6 +962,16 @@ drawbar(Monitor *m)
 			drw_rect(drw, x, 0, w, bh, 1, 1);
 		}
 	}
+
+#ifdef STATIC_STATUS
+	if (m->num == status_mon) { /* status is only drawn on selected monitor */
+#else
+	/* draw status first so it can be overdrawn by tags later */
+	if (m == selmon) { /* status is only drawn on selected monitor */
+#endif
+		tw = m->ww - drawstatusbar(m, bh, stext);
+	}
+
 	drw_map(drw, m->barwin, 0, 0, m->ww - stw, bh);
 }
 
