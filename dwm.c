@@ -2408,7 +2408,7 @@ updatestatus(void)
 	if (status_mon >= 0)
 		drawbar(dirtomon(status_mon)); // Draw status at status_mon
 	else
-		drawbar(selmon);               // Draw at set monitor
+		drawbar(selmon);               // Draw at focused monitor
 
 	updatesystray();
 }
