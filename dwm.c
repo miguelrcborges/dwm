@@ -2405,10 +2405,13 @@ updatestatus(void)
 	if (!gettextprop(root, XA_WM_NAME, stext, sizeof(stext)))
 		strcpy(stext, "dwm-"VERSION);
 	
-	if (status_mon >= 0)
-		drawbar(dirtomon(status_mon)); // Draw status at status_mon
-	else
+	if (status_mon >= 0) {           // Draw status at status_mon
+		Monitor *m = mons;
+		for (int i = 0; i < status_mon; ++i) m = m->next;
+		drawbar(m); 
+	} else {
 		drawbar(selmon);               // Draw at focused monitor
+	}
 
 	updatesystray();
 }
