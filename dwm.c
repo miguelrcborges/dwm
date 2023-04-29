@@ -308,6 +308,7 @@ static Drw *drw;
 static Monitor *mons, *selmon;
 
 static Window root, wmcheckwin;
+static int status_active_mon;
 
 /* configuration, allows nested code to access above variables */
 #include "config.h"
@@ -932,8 +933,8 @@ drawbar(Monitor *m)
 		stw = getsystraywidth();
 
 	if (
-				(m->num == status_mon && status_mon >= 0) ||  // static status
-				(m == selmon && status_mon <= -1)             // following status
+				(m->num == status_active_mon && status_active_mon >= 0) ||  // static status
+				(m == selmon && status_mon <= -1)                           // following status
 		) {
 		tw = m->ww - drawstatusbar(m, bh, stext);
 	}
@@ -1855,6 +1856,8 @@ setfullscreen(Client *c, int fullscreen)
 		c->oldbw = c->bw;
 		c->bw = 0;
 		c->isfloating = 1;
+		if (c->mon->num == status_mon)
+			status_active_mon = fallback_status_mon;
 		resizeclient(c, c->mon->mx, c->mon->my, c->mon->mw, c->mon->mh);
 		XRaiseWindow(dpy, c->win);
 	} else if (!fullscreen && c->isfullscreen){
@@ -1867,6 +1870,8 @@ setfullscreen(Client *c, int fullscreen)
 		c->y = c->oldy;
 		c->w = c->oldw;
 		c->h = c->oldh;
+		if (c->mon->num == status_mon)
+			status_active_mon = status_mon;
 		resizeclient(c, c->x, c->y, c->w, c->h);
 		arrange(c->mon);
 	}
@@ -2402,9 +2407,9 @@ updatestatus(void)
 	if (!gettextprop(root, XA_WM_NAME, stext, sizeof(stext)))
 		strcpy(stext, "dwm-"VERSION);
 	
-	if (status_mon >= 0) {           // Draw status at status_mon
+	if (status_active_mon >= 0) {           // Draw status at status_mon
 		Monitor *m = mons;
-		for (int i = 0; i < status_mon; ++i) m = m->next;
+		for (int i = 0; i < status_active_mon; ++i) m = m->next;
 		drawbar(m); 
 	} else {
 		drawbar(selmon);               // Draw at focused monitor
@@ -2669,8 +2674,8 @@ systraytomon(Monitor *m) {
 		return m == selmon ? m : NULL;
 	}
 	for(n = 0, t = mons; t && t->next; n++, t = t->next) ;
-	for(i = 0, t = mons; t && t->next && i < status_mon; i++, t = t->next) ;
-	if(systraypinningfailfirst && n < status_mon)
+	for(i = 0, t = mons; t && t->next && i < status_active_mon; i++, t = t->next) ;
+	if(systraypinningfailfirst && n < status_active_mon)
 		return mons;
 	return t;
 }
@@ -2699,6 +2704,7 @@ main(int argc, char *argv[])
 	if (!(dpy = XOpenDisplay(NULL)))
 		die("dwm: cannot open display");
 	checkotherwm();
+	status_active_mon = status_mon;
 	setup();
 #ifdef __OpenBSD__
 	if (pledge("stdio rpath proc exec", NULL) == -1)
