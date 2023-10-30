@@ -2403,7 +2403,7 @@ updatestatus(void)
 	
 	if (status_active_mon >= 0) {           // Draw status at status_mon
 		Monitor *m = mons;
-		for (int i = 0; i < status_active_mon; ++i) m = m->next;
+		for (int i = 0; m && m->next && i < status_active_mon; ++i) m = m->next;
 		drawbar(m); 
 	} else {
 		drawbar(selmon);               // Draw at focused monitor
