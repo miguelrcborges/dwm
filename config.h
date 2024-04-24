@@ -4,6 +4,7 @@
 static const int status_mon = 0;   	            /* <=-1: follows focused monitor, >=0: static on given mon number */
 static const int fallback_status_mon = 1;       /* fallback monitor when a fullscreen window occupies the previous mon (only when static status is on) */
 static const unsigned int refresh_rate = 144;
+static const unsigned int enable_noborder = 0;
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
 static const unsigned int gappx     = 8;       	/* gaps between windows */
 static const unsigned int snap      = 32;       /* snap pixel */

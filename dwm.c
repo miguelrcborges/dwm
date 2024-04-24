@@ -654,7 +654,7 @@ configure(Client *c)
 	ce.height = c->h;
 	ce.border_width = c->bw;
 
-	if (noborder(c)) {
+	if (noborder(c) && enable_noborder) {
 		ce.width += c->bw * 2;
 		ce.height += c->bw * 2;
 		ce.border_width = 0;
@@ -1621,7 +1621,7 @@ resizeclient(Client *c, int x, int y, int w, int h)
 	c->oldw = c->w; c->w = wc.width = w;
 	c->oldh = c->h; c->h = wc.height = h;
 	wc.border_width = c->bw;
-	if (noborder(c)) {
+	if (noborder(c) && enable_noborder) {
 		wc.width += c->bw * 2;
 		wc.height += c->bw * 2;
 		wc.border_width = 0;
